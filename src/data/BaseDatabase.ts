@@ -1,24 +1,32 @@
-import dotenv from "dotenv";
-import {Knex} from "knex";
-import knex from "knex"
+import knex from "knex";
+import dotenv from "dotenv"
+import { Knex } from "knex";
 
-dotenv.config();
+dotenv.config()
 
-export default class BaseDataBase {
+export abstract class BaseDatabase {
 
-    protected static connection: Knex = knex({
-        client: "mysql",
-        connection: {
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE_NAME,
-            port: 3306,
-            multipleStatements: true
-        },
-    });
+    private static connection: Knex | null = null;
 
+    protected getConnection(): Knex {
+        if (!BaseDatabase.connection) {
+            BaseDatabase.connection = knex({
+                client: "mysql",
+                connection: {
+                    host: process.env.DB_HOST,
+                    port: 3306,
+                    user: process.env.DB_USER,
+                    password: process.env.DB_PASSWORD,
+                    database: process.env.DB_DATABASE_NAME,
+                },
+            });
+        }
+        return BaseDatabase.connection;
+    }
     public static async destroyConnection(): Promise<void> {
-        await BaseDataBase.connection.destroy();
+        if (BaseDatabase.connection) {
+            await BaseDatabase.connection.destroy();
+            BaseDatabase.connection = null;
+        }
     }
 }

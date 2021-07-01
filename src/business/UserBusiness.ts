@@ -1,6 +1,5 @@
 import userDatabase, { UserDatabase } from "../data/UserDatabase";
 import { CustomError } from "../errors/CustomError";
-import { User } from "../model/User";
 import authenticator, { Authenticator } from "../services/Authenticator";
 import hashManager, { HashManager } from "../services/HashManager";
 import idGenerator, { IdGenerator } from "../services/IdGenerator";
@@ -40,9 +39,7 @@ export class UserBusiness {
 
             const cypherPassword = await this.hashManager.hash(password);
 
-            await this.userDatabase.createUser(
-                new User(id, name, email, nickname, cypherPassword)
-            );
+            await this.userDatabase.createUser(id, name, email, nickname, cypherPassword);
 
             const accessToken = this.authenticator.generateToken({ id });
 
