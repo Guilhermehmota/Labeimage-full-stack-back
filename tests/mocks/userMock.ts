@@ -1,8 +1,8 @@
-import { User } from "../src/model/User";
+import { User } from "../../src/model/User";
 
 
 export const userMock = new User(
-    "id_user",
+    "id_mock",
     "Tarcísio",
     "tarcisio@gmail.com",
     "Tatá",
