@@ -6,12 +6,14 @@ export class UserController {
     public async signup(req: Request, res: Response) {
         try {
             const { name, email, nickname, password } = req.body
-            const result = await userBusiness.signup(
+
+            const user = {
                 name,
                 email,
                 nickname,
-                password
-            );
+                password            
+            }
+            const result = await userBusiness.signup(user);
             res.status(200).send(result);
         } catch (error) {
             const { statusCode, message } = error
@@ -22,7 +24,12 @@ export class UserController {
     public async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body
-            const result = await userBusiness.login(email, password);
+
+            const user = {
+                email,
+                password
+            }
+            const result = await userBusiness.login(user);
             res.status(200).send(result);
         } catch (error) {
             const { statusCode, message } = error
