@@ -17,23 +17,17 @@ export class UserDatabase extends BaseDatabase {
         );
     }
 
-    private static TABLE_NAME = "PFS_USERS";
+    private static TABLE_NAME = "LABEIMAGE_USERS";
 
-    public async createUser(
-        id: string,
-        name: string,
-        email: string,
-        nickname: string,
-        password: string,
-    ): Promise<void> {
+    public async createUser(user: User): Promise<void> {
         try {
             await this.getConnection()
                 .insert({
-                    id,
-                    email,
-                    name,
-                    nickname,
-                    password,
+                    id: user.getId(),
+                    email: user.getEmail(),
+                    name: user.getName(),
+                    nickname: user.getNickname(),
+                    password: user.getPassword(),
                 })
                 .into(UserDatabase.TABLE_NAME);
         } catch (error) {
