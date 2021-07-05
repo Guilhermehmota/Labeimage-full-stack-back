@@ -49,9 +49,9 @@ export class User {
         this.password = password;
     }
 
-    static toUserModel(user: any): User {
-        return new User(user.id, user.name, user.email, user.nickname, user.password);
-    }
+    // static toUserModel(user: any): User {
+    //     return new User(user.id, user.name, user.email, user.nickname, user.password);
+    // }
 
 }
 
@@ -66,3 +66,5 @@ export interface LoginInputDTO{
     email: string;
     password: string;
 }
+
+

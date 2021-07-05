@@ -17,37 +17,25 @@ export class UserDatabase extends BaseDatabase {
         );
     }
 
-    private static TABLE_NAME = "PFS_USERS";
+    private static TABLE_NAME = "LABEIMAGE_USERS";
 
-    public async createUser(
-        id: string,
-        name: string,
-        email: string,
-        nickname: string,
-        password: string,
-    ): Promise<void> {
+    public async createUser(user: User): Promise<void> {
         try {
             await this.getConnection()
-                .insert({
-                    id,
-                    email,
-                    name,
-                    nickname,
-                    password,
-                })
+                .insert(user)
                 .into(UserDatabase.TABLE_NAME);
         } catch (error) {
             throw new Error(error.sqlMessage || error.message);
         }
     }
 
-    public async getUserByEmail(email: string): Promise<User> {
+    public async getUserByEmail(email: string): Promise<User | undefined> {
         const result = await this.getConnection()
             .select("*")
             .from(UserDatabase.TABLE_NAME)
             .where({ email });
 
-        return User.toUserModel(result[0]);
+        return this.toModel(result[0]);
     }
 
     public async getUserById(id: string): Promise<User | undefined> {

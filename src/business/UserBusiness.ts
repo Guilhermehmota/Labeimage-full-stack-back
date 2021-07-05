@@ -1,5 +1,6 @@
 import userDatabase, { UserDatabase } from "../data/UserDatabase";
 import { CustomError } from "../errors/CustomError";
+import { LoginInputDTO, User, UserInputDTO } from "../model/User";
 import authenticator, { Authenticator } from "../services/Authenticator";
 import hashManager, { HashManager } from "../services/HashManager";
 import idGenerator, { IdGenerator } from "../services/IdGenerator";
@@ -16,30 +17,27 @@ export class UserBusiness {
 
     ) { }
 
-    public async signup(
-        name: string,
-        email: string,
-        nickname: string,
-        password: string
-    ) {
+    public async signup(user: UserInputDTO) {
         try {
-            if (!name || !email || !nickname || !password) {
+            if (!user.name || !user.email || !user.nickname || !user.password) {
                 throw new CustomError(422, "Missing input");
             }
 
-            if (email.indexOf("@") === -1) {
+            if (user.email.indexOf("@") === -1) {
                 throw new CustomError(422, "Invalid email");
             }
 
-            if (password.length < 6) {
+            if (user.password.length < 6) {
                 throw new CustomError(422, "Invalid password");
             }
 
             const id = this.idGenerator.generate();
 
-            const cypherPassword = await this.hashManager.hash(password);
+            const cypherPassword = await this.hashManager.hash(user.password);
 
-            await this.userDatabase.createUser(id, name, email, nickname, cypherPassword);
+            await this.userDatabase.createUser(
+                new User (id, user.name, user.email, user.nickname, cypherPassword )
+                );
 
             const accessToken = this.authenticator.generateToken({ id });
 
@@ -54,22 +52,22 @@ export class UserBusiness {
         }
     }
 
-    public async login(email: string, password: string) {
+    public async login( user: LoginInputDTO) {
 
         try {
-            if (!email || !password) {
+            if (!user.email || !user.password) {
                 throw new CustomError(422, "Missing input");
             }
 
-            const user = await this.userDatabase.getUserByEmail(email);
+            const authorizedUser = await this.userDatabase.getUserByEmail(user.email);
 
-            if (!user) {
+            if (!authorizedUser) {
                 throw new CustomError(401, "Invalid credentials");
             }
 
             const isPasswordCorrect = await this.hashManager.compare(
-                password,
-                user.getPassword()
+                user.password,
+                authorizedUser.getPassword()
             );
 
             if (!isPasswordCorrect) {
@@ -77,7 +75,7 @@ export class UserBusiness {
             }
 
             const accessToken = this.authenticator.generateToken({
-                id: user.getId()
+                id: authorizedUser.getId()
             });
 
             return { accessToken };
