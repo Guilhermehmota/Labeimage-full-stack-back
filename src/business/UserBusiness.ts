@@ -36,8 +36,14 @@ export class UserBusiness {
             const cypherPassword = await this.hashManager.hash(user.password);
 
             await this.userDatabase.createUser(
-                new User (id, user.name, user.email, user.nickname, cypherPassword )
-                );
+                new User (
+                    id, 
+                    user.name, 
+                    user.email, 
+                    user.nickname, 
+                    cypherPassword 
+                )
+            );
 
             const accessToken = this.authenticator.generateToken({ id });
 

@@ -30,6 +30,7 @@ export class ImageDatabase extends BaseDatabase {
                     author: image.getAuthor(),
                     date: image.getDate(),
                     file: image.getFile(),
+                    tags: image.getTags(),
                     collection: image.getCollection(),
                 })
                 .into(ImageDatabase.TABLE_NAME);
@@ -37,8 +38,6 @@ export class ImageDatabase extends BaseDatabase {
             throw new Error (error.sqlMessage || error.message);
         }
     }
-
-
-
-
 }
+
+export default new ImageDatabase()
