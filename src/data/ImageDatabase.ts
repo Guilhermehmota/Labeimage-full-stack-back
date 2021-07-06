@@ -30,6 +30,7 @@ export class ImageDatabase extends BaseDatabase {
                     author: image.getAuthor(),
                     date: image.getDate(),
                     file: image.getFile(),
+                    tags: image.getTags(),
                     collection: image.getCollection(),
                 })
                 .into(ImageDatabase.TABLE_NAME);
@@ -38,7 +39,31 @@ export class ImageDatabase extends BaseDatabase {
         }
     }
 
+    public async getAllImages(): Promise<any> {
+        try {
+            const result = await this.getConnection()
+            .select("*")
+            .from(ImageDatabase.TABLE_NAME)
 
+            return result
+        } catch (error) {
+            throw new Error (error.sqlMessage || error.message);
+        }
+    }
 
+    public async getImageById(id: string): Promise<Image> {
+        try {
+            const result = await this.getConnection() 
+            .select("*")
+            .from(ImageDatabase.TABLE_NAME)
+            .where({id})
+
+            return result[0]
+        } catch (error) {
+            throw new Error (error.sqlMessage || error.message);
+        }
+    }
 
 }
+
+export default new ImageDatabase()
