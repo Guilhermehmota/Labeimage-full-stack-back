@@ -16,16 +16,16 @@ export class ImageBusiness {
 
     public async createImage(image: ImageInputDTO, token: string) {
         try {
-            
+
             const imageId = this.idGenerator.generate()
-            
+
             const userAuthorization = this.authenticator.getData(token)
-            
+
             if (!token) {
                 throw new CustomError(400, "Unauthorized");
             }
 
-            if(!image.subtitle || !image.file || !image.tags || !image.collection){
+            if (!image.subtitle || !image.file || !image.tags || !image.collection) {
                 throw new CustomError(422, "You must specify a 'subtitle', 'file', 'tags' and 'collection'")
             }
 
@@ -42,44 +42,62 @@ export class ImageBusiness {
             )
 
 
-            } catch (error) {
-                throw new CustomError(error.statusCode, error.message)
+        } catch (error) {
+            throw new CustomError(error.statusCode, error.message)
         }
     }
 
-    public async getAllImages(token:string) {
+    public async getAllImages(token: string) {
 
-        
-        const images = await this.imageDatabase.getAllImages();
-        
-        const userAuthorization = this.authenticator.getData(token)
-        
-        if (!token) {
-            throw new CustomError(400, "Unauthorized");
-        }
+        try {
+            const images = await this.imageDatabase.getAllImages();
+    
+            const userAuthorization = this.authenticator.getData(token)
+    
+            if (!token) {
+                throw new CustomError(400, "Unauthorized");
+            }
+            
+            if(!userAuthorization) {
+                throw new CustomError(400, "Invalid credential");
+            }
 
-        if(!images){
-            throw new CustomError(404, "No images found")
+            if (!images) {
+                throw new CustomError(404, "No images found")
+            }
+
+            return images
+
+        }catch (error) {
+            throw new CustomError(error.statusCode, error.message)
         }
-        return images
     }
 
-    public async getImageById(id: string, token: string){
+    public async getImageById(id: string, token: string) {
 
-        
-        const image = await this.imageDatabase.getImageById(id);
-        
-        const userAuthorization = this.authenticator.getData(token);
-        
-        if (!token) {
-            throw new CustomError(400, "Unauthorized");
+        try {
+
+            const image = await this.imageDatabase.getImageById(id);
+            
+            const userAuthorization = this.authenticator.getData(token);
+            
+            if (!token) {
+                throw new CustomError(400, "Unauthorized");
+            }
+            
+            if(!userAuthorization) {
+                throw new CustomError(400, "Invalid credential");
+            }
+            
+            if (!image) {
+                throw new CustomError(404, "Image not found")
+            }
+            
+            return image
+
+        } catch (error) {
+            throw new CustomError(error.statusCode, error.message)
         }
-
-        if(!image){
-            throw new CustomError(404, "Image not found")
-        }
-
-        return image
     }
 }
 

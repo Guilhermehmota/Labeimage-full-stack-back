@@ -50,6 +50,7 @@ export class ImageController {
             const image = await imageBusiness.getImageById(id, token);
 
             res.status(201).send({ image });
+            
         } catch (error) {
             res.status(error.statusCode).send({ error: error.message });
         }

@@ -39,13 +39,13 @@ export class ImageDatabase extends BaseDatabase {
         }
     }
 
-    public async getAllImages(): Promise<Image> {
+    public async getAllImages(): Promise<any> {
         try {
-            const result = await this.getConnection().raw(`
-            SELECT * FROM ${ImageDatabase.TABLE_NAME};
-            `);
+            const result = await this.getConnection()
+            .select("*")
+            .from(ImageDatabase.TABLE_NAME)
 
-            return result[0]
+            return result
         } catch (error) {
             throw new Error (error.sqlMessage || error.message);
         }
@@ -53,10 +53,10 @@ export class ImageDatabase extends BaseDatabase {
 
     public async getImageById(id: string): Promise<Image> {
         try {
-            const result = await this.getConnection().raw(`
-            SELECT * FROM ${ImageDatabase.TABLE_NAME}
-            WHERE ${ImageDatabase.TABLE_NAME}.id = ${id};
-            `)
+            const result = await this.getConnection() 
+            .select("*")
+            .from(ImageDatabase.TABLE_NAME)
+            .where({id})
 
             return result[0]
         } catch (error) {

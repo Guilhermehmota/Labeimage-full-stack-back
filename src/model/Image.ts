@@ -5,7 +5,7 @@ export class Image {
         private id: string,
         private subtitle: string,
         private author: string,
-        private date: Date,
+        private date: Date | string,
         private file: string,
         private tags: string,
         private collection: string
@@ -49,8 +49,8 @@ export class Image {
         this.author = author;
     }
 
-    setDate(date: Date) {
-        this.date = date;
+    setDate(newDate: string){
+        this.date = newDate
     }
 
     setFile(file: string) {
