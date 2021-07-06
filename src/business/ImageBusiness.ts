@@ -14,8 +14,13 @@ export class ImageBusiness {
         private idGenerator: IdGenerator,
     ) { }
 
-    async createImage(image: ImageInputDTO, token: string) {
+    public async createImage(image: ImageInputDTO, token: string) {
         try {
+            
+            const imageId = this.idGenerator.generate()
+            
+            const userAuthorization = this.authenticator.getData(token)
+            
             if (!token) {
                 throw new CustomError(400, "Unauthorized");
             }
@@ -23,10 +28,6 @@ export class ImageBusiness {
             if(!image.subtitle || !image.file || !image.tags || !image.collection){
                 throw new CustomError(422, "You must specify a 'subtitle', 'file', 'tags' and 'collection'")
             }
-
-            const imageId = this.idGenerator.generate()
-
-            const userAuthorization = this.authenticator.getData(token)
 
             await this.imageDatabase.createImage(
                 new Image(
@@ -44,7 +45,41 @@ export class ImageBusiness {
             } catch (error) {
                 throw new CustomError(error.statusCode, error.message)
         }
+    }
 
+    public async getAllImages(token:string) {
+
+        
+        const images = await this.imageDatabase.getAllImages();
+        
+        const userAuthorization = this.authenticator.getData(token)
+        
+        if (!token) {
+            throw new CustomError(400, "Unauthorized");
+        }
+
+        if(!images){
+            throw new CustomError(404, "No images found")
+        }
+        return images
+    }
+
+    public async getImageById(id: string, token: string){
+
+        
+        const image = await this.imageDatabase.getImageById(id);
+        
+        const userAuthorization = this.authenticator.getData(token);
+        
+        if (!token) {
+            throw new CustomError(400, "Unauthorized");
+        }
+
+        if(!image){
+            throw new CustomError(404, "Image not found")
+        }
+
+        return image
     }
 }
 

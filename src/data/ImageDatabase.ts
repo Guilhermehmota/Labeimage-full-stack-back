@@ -38,6 +38,32 @@ export class ImageDatabase extends BaseDatabase {
             throw new Error (error.sqlMessage || error.message);
         }
     }
+
+    public async getAllImages(): Promise<Image> {
+        try {
+            const result = await this.getConnection().raw(`
+            SELECT * FROM ${ImageDatabase.TABLE_NAME};
+            `);
+
+            return result[0]
+        } catch (error) {
+            throw new Error (error.sqlMessage || error.message);
+        }
+    }
+
+    public async getImageById(id: string): Promise<Image> {
+        try {
+            const result = await this.getConnection().raw(`
+            SELECT * FROM ${ImageDatabase.TABLE_NAME}
+            WHERE ${ImageDatabase.TABLE_NAME}.id = ${id};
+            `)
+
+            return result[0]
+        } catch (error) {
+            throw new Error (error.sqlMessage || error.message);
+        }
+    }
+
 }
 
 export default new ImageDatabase()
