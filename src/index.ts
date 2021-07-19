@@ -1,6 +1,6 @@
 import express from "express";
 import { userRouter } from "./routes/UserRouter";
-import {AddressInfo} from "net";
+import { AddressInfo } from "net";
 import { imageRouter } from "./routes/ImageRouter";
 
 
@@ -12,11 +12,13 @@ app.use("/users", userRouter);
 app.use("/images", imageRouter);
 
 
-const server = app.listen(3003, () => {
+
+const PORT = process.env.PORT || 3003;
+const server = app.listen(PORT, () => {
     if (server) {
         const address = server.address() as AddressInfo;
         console.log(`Servidor rodando em http://localhost:${address.port}`);
     } else {
-        console.error(`Falha ao rodar o servidor`);
+        console.error(`Falha ao rodar o servidor.`);
     }
 });
