@@ -2,7 +2,9 @@ import express from "express";
 import { userRouter } from "./routes/UserRouter";
 import { AddressInfo } from "net";
 import { imageRouter } from "./routes/ImageRouter";
+import dotenv from "dotenv"
 
+dotenv.config()
 
 const app = express();
 
@@ -14,7 +16,7 @@ app.use("/images", imageRouter);
 
 
 const PORT = process.env.PORT || 3004;
-const server = app.listen(Number(PORT), () => {
+const server = app.listen(PORT, () => {
     if (server) {
         const address = server.address() as AddressInfo;
         console.log(`Servidor rodando em http://localhost:${address.port}`);
