@@ -3,7 +3,7 @@ import { UserDatabase } from "../src/data/UserDatabase";
 import authenticatorMock from "./mocks/authenticatorMock";
 import hashManagerMock from "./mocks/hashManagerMock";
 import idGeneratorMock from "./mocks/idGeneratorMock";
-import userDatabaseMock from "./mocks/userDatabaseMock";
+import userDatabaseMock from "./mocks/userDatabaseMock"
 
 
 

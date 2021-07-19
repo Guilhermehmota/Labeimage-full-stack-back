@@ -2,7 +2,7 @@ import { User } from "../../src/model/User";
 import { userMock } from "./userMock";
 
 
-export class UserDatabase {
+export class UserDatabaseMock {
 
     public async getUserById(id:string): Promise<User | undefined> {
         if (id === "id_mock"){
@@ -12,4 +12,4 @@ export class UserDatabase {
     }
 }
 
-export default new UserDatabase()
+export default new UserDatabaseMock()
