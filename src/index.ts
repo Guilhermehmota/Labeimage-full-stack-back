@@ -13,7 +13,7 @@ app.use("/images", imageRouter);
 
 
 
-const PORT = process.env.APP_PORT || 3004;
+const PORT = process.env.PORT || 3004;
 const server = app.listen(Number(PORT), () => {
     if (server) {
         const address = server.address() as AddressInfo;
