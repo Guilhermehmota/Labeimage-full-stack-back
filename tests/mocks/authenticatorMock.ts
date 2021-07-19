@@ -12,5 +12,5 @@ export class TokenGeneratorMock {
 export interface AuthenticationData {
     id: string;
 }
-  
+
 export default new TokenGeneratorMock()  
