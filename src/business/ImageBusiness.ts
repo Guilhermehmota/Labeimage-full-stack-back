@@ -82,7 +82,6 @@ export class ImageBusiness {
             const userAuthorization = this.authenticator.getData(token);
 
             
-            
             if (!token) {
                 throw new CustomError(400, "Unauthorized");
             }
