@@ -78,8 +78,14 @@ export class ImageBusiness {
         try {
 
             const image = await this.imageDatabase.getImageById(id);
-            
+
             const userAuthorization = this.authenticator.getData(token);
+
+            const imageDate = new Date(image!.getDate()).toISOString()
+            const date = imageDate.split("T")
+            const splittedDate = date[0].split("-")
+            const correctedDate = `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
+            image && image.setDate(correctedDate!)
             
             if (!token) {
                 throw new CustomError(400, "Unauthorized");
