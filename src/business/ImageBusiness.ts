@@ -22,11 +22,11 @@ export class ImageBusiness {
             const userAuthorization = this.authenticator.getData(token)
 
             if (!token) {
-                throw new CustomError(400, "Unauthorized");
+                throw new CustomError(400, "você precisa estar logado");
             }
 
             if (!image.subtitle || !image.file || !image.tags || !image.collection) {
-                throw new CustomError(422, "You must specify a 'subtitle', 'file', 'tags' and 'collection'")
+                throw new CustomError(422, "você deve inserir 'titulo', 'link', 'tags' and 'coleção'")
             }
 
             await this.imageDatabase.createImage(
@@ -55,15 +55,15 @@ export class ImageBusiness {
             const userAuthorization = this.authenticator.getData(token)
     
             if (!token) {
-                throw new CustomError(400, "Unauthorized");
+                throw new CustomError(400, "você precisa estar logado");
             }
             
             if(!userAuthorization) {
-                throw new CustomError(400, "Invalid credential");
+                throw new CustomError(400, "email ou senha inválidos");
             }
 
             if (!images) {
-                throw new CustomError(404, "No images found")
+                throw new CustomError(404, "imagem não encontrada")
             }
 
             return images
@@ -83,15 +83,15 @@ export class ImageBusiness {
 
             
             if (!token) {
-                throw new CustomError(400, "Unauthorized");
+                throw new CustomError(400, "você precisa estar logado");
             }
             
             if(!userAuthorization) {
-                throw new CustomError(400, "Invalid credential");
+                throw new CustomError(400, "email ou senha inválidos");
             }
             
             if (!image) {
-                throw new CustomError(404, "Image not found")
+                throw new CustomError(404, "imagem não encontrada")
             }
             
             return image
