@@ -20,15 +20,15 @@ export class UserBusiness {
     public async signup(user: UserInputDTO) {
         try {
             if (!user.name || !user.email || !user.nickname || !user.password) {
-                throw new CustomError(422, "Missing input");
+                throw new CustomError(422, "todos os campos devem ser preenchidos");
             }
 
             if (user.email.indexOf("@") === -1) {
-                throw new CustomError(422, "Invalid email");
+                throw new CustomError(422, "digite um email válido");
             }
 
             if (user.password.length < 6) {
-                throw new CustomError(422, "Invalid password");
+                throw new CustomError(422, "a senha deve conter no mínimo 6 caracteres");
             }
 
             const id = this.idGenerator.generate();
@@ -51,7 +51,7 @@ export class UserBusiness {
 
         } catch (error) {
             if (error.message.includes("key 'email' ")) {
-                throw new CustomError(409, "Email already in use")
+                throw new CustomError(409, "este email já está em uso")
             }
 
             throw new CustomError(error.statusCode, error.message)
@@ -62,13 +62,13 @@ export class UserBusiness {
 
         try {
             if (!user.email || !user.password) {
-                throw new CustomError(422, "Missing input");
+                throw new CustomError(422, "todos os campos deve ser preenchidos");
             }
 
             const authorizedUser = await this.userDatabase.getUserByEmail(user.email);
 
             if (!authorizedUser) {
-                throw new CustomError(401, "Invalid credentials");
+                throw new CustomError(401, "email ou senha inválidos");
             }
 
             const isPasswordCorrect = await this.hashManager.compare(
@@ -77,7 +77,7 @@ export class UserBusiness {
             );
 
             if (!isPasswordCorrect) {
-                throw new CustomError(401, "Invalid credentials");
+                throw new CustomError(401, "senha inválida");
             }
 
             const accessToken = this.authenticator.generateToken({
@@ -95,7 +95,7 @@ export class UserBusiness {
         const user = await this.userDatabase.getUserById(id);
 
         if (!user) {
-            throw new CustomError(404, "User not found")
+            throw new CustomError(404, "este usuário não existe")
         }
 
         return {
