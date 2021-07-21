@@ -1,4 +1,4 @@
-# Labeimage - backend
+# Labeimage - Backend
 
 ### Meu primeiro projeto Full Stack!! 
 
