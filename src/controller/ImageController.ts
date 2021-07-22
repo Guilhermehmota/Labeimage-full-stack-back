@@ -35,7 +35,8 @@ export class ImageController {
 
             const images = await imageBusiness.getAllImages(token)
 
-            res.status(201).send({ images });
+            return res.status(201).send({ images });
+            
         } catch (error) {
             res.status(error.statusCode).send({ error: error.message });
         }
