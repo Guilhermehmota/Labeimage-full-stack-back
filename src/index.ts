@@ -9,8 +9,13 @@ dotenv.config()
 
 const app = express();
 
+const corsConfig = {
+    origin: "https://labeimage-guilherme.surge.sh",
+    optionSuccessStatus: 200
+}
+
 app.use(express.json());
-app.use(cors())
+app.use(cors(corsConfig))
 
 app.use("/users", userRouter);
 app.use("/images", imageRouter);
