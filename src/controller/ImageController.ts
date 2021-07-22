@@ -24,7 +24,7 @@ export class ImageController {
 
 
         } catch (error) {
-            res.status(error.statusCode).send({ error: error.message });
+            res.status(error.statusCode || 400 ).send({ error: error.message });
         }
     }
 
@@ -36,9 +36,9 @@ export class ImageController {
             const images = await imageBusiness.getAllImages(token)
 
             return res.status(201).send({ images });
-            
+
         } catch (error) {
-            res.status(error.statusCode).send({ error: error.message });
+            res.status(error.statusCode || 400).send({ error: error.message });
         }
     }
 
@@ -53,7 +53,7 @@ export class ImageController {
             res.status(201).send({ image });
             
         } catch (error) {
-            res.status(error.statusCode).send({ error: error.message });
+            res.status(error.statusCode || 400).send({ error: error.message });
         }
 
     }
