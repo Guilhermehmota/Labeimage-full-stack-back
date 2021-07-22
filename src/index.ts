@@ -10,7 +10,7 @@ dotenv.config()
 const app = express();
 
 const corsConfig = {
-    origin: "https://aspiring-son.surge.sh",
+    origin: "https://diligent-crate.surge.sh",
     optionsSuccessStatus: 200
 }
 
